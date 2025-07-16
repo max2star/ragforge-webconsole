@@ -5,7 +5,7 @@ import { LLMFactory } from '@/constants/llm';
 import { useSetModalState, useTranslate } from '@/hooks/common-hooks';
 import { LlmItem, useSelectLlmList } from '@/hooks/llm-hooks';
 import { getRealModelName } from '@/utils/llm-util';
-import { CloseCircleOutlined, SettingOutlined } from '@ant-design/icons';
+import { CloseCircleOutlined, EditOutlined, SettingOutlined } from '@ant-design/icons';
 import {
   Button,
   Card,
@@ -129,13 +129,18 @@ const ModelCard = ({ item, clickApiKey }: IModelCardProps) => {
             size="small"
             dataSource={item.llm}
             className={styles.llmList}
-            renderItem={(item) => (
+            renderItem={(llmItem) => (
               <List.Item>
                 <Space>
-                  {getRealModelName(item.name)}
-                  <Tag color="#b8b8b8">{item.type}</Tag>
+                  {getRealModelName(llmItem.name)}
+                  <Tag color="#b8b8b8">{llmItem.type}</Tag>
+                  <Tooltip title={t('edit', { keyPrefix: 'common' })}>
+                    <Button type={'text'} onClick={() => clickApiKey(item.name)}>
+                      <EditOutlined />
+                    </Button>
+                  </Tooltip>
                   <Tooltip title={t('delete', { keyPrefix: 'common' })}>
-                    <Button type={'text'} onClick={handleDeleteLlm(item.name)}>
+                    <Button type={'text'} onClick={handleDeleteLlm(llmItem.name)}>
                       <CloseCircleOutlined style={{ color: '#D92D20' }} />
                     </Button>
                   </Tooltip>
