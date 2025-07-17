@@ -397,14 +397,12 @@ const Chunk = () => {
               </table>
             </Space>
           </Flex> */}
-          {isPdf && (
-            <section className={styles.documentPreview}>
-              <DocumentPreview
-                highlights={highlights}
-                setWidthAndHeight={setWidthAndHeight}
-              />
-            </section>
-          )}
+          <section className={styles.documentPreview}>
+            <DocumentPreview
+              highlights={highlights}
+              setWidthAndHeight={setWidthAndHeight}
+            />
+          </section>
         </Flex>
       </div>
       {chunkUpdatingVisible && (

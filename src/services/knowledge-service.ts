@@ -36,6 +36,7 @@ const {
   upload_and_parse,
   listTagByKnowledgeIds,
   setMeta,
+  mv_kb,
 } = api;
 
 const methods = {
@@ -154,6 +155,10 @@ const methods = {
     url: listTagByKnowledgeIds,
     method: 'get',
   },
+  mv_kb: {
+    url: mv_kb,
+    method: 'post',
+  },
 };
 
 const kbService = registerServer<keyof typeof methods>(methods, request);
@@ -181,5 +186,8 @@ export const listDataset = (
   params?: IFetchKnowledgeListRequestParams,
   body?: IFetchKnowledgeListRequestBody,
 ) => request.post(api.kb_list, { data: body || {}, params });
+
+export const moveKB = (body: any) =>
+  request.post(api.mv_kb, { data: body || {} });
 
 export default kbService;

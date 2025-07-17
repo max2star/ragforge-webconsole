@@ -10,23 +10,35 @@ import {
   useSetNextDocumentStatus,
 } from '@/hooks/document-hooks';
 import { IDocumentInfo } from '@/interfaces/database/document';
+import { listDataset, moveKB } from '@/services/knowledge-service';
 import {
   DownOutlined,
+  DragOutlined,
   FileOutlined,
   FileTextOutlined,
   PlusOutlined,
   SearchOutlined,
-} from '@ant-design/icons';
-import { Button, Dropdown, Flex, Input, MenuProps, Space } from 'antd';
-import { useCallback, useMemo } from 'react';
-import { toast } from 'sonner';
-import { RunningStatus } from './constant';
-import {
   SortAscendingOutlined,
   SortDescendingOutlined,
   SwapOutlined,
 } from '@ant-design/icons';
-
+import {
+  Button,
+  Dropdown,
+  Flex,
+  Form,
+  Input,
+  MenuProps,
+  message,
+  Modal,
+  Select,
+  Space,
+} from 'antd';
+import { useCallback, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
+import { useLocation } from 'umi';
+import { RunningStatus } from './constant';
 import styles from './index.less';
 
 interface IProps {
@@ -35,27 +47,38 @@ interface IProps {
   showWebCrawlModal(): void;
   showDocumentUploadModal(): void;
   searchString: string;
+  selectStatus: string | undefined;
   handleInputChange: React.ChangeEventHandler<HTMLInputElement>;
+  handleOnSelect: (e: string | undefined) => void;
   documents: IDocumentInfo[];
   sortOrder?: 'asc' | 'desc' | '';
   toggleSortOrder?: () => void;
+  onRefresh: () => void;
 }
 
 const DocumentToolbar = ({
   searchString,
+  selectStatus,
   selectedRowKeys,
   showCreateModal,
   showDocumentUploadModal,
   handleInputChange,
+  handleOnSelect,
   documents,
   sortOrder = '',
   toggleSortOrder = () => {},
+  onRefresh,
 }: IProps) => {
   const { t } = useTranslate('knowledgeDetails');
+  const textTranslation = useTranslation().t;
   const { removeDocument } = useRemoveNextDocument();
   const showDeleteConfirm = useShowDeleteConfirm();
   const { runDocumentByIds } = useRunNextDocument();
   const { setDocumentStatus } = useSetNextDocumentStatus();
+  const [showMoveModal, setShowMoveModal] = useState<boolean>(false);
+  const [knowledgeList, setKnowledgeList] = useState<any[]>([]);
+  const [form] = Form.useForm();
+  const umiLocation: any = useLocation();
 
   const actionItems: MenuProps['items'] = useMemo(() => {
     return [
@@ -126,14 +149,24 @@ const DocumentToolbar = ({
     runDocument(2);
   }, [runDocument]);
 
-  const onChangeStatus = useCallback(
-    (enabled: boolean) => {
-      selectedRowKeys.forEach((id) => {
-        setDocumentStatus({ status: enabled, documentId: id });
+  const onChangeStatus = useCallback((status: boolean) => {
+    setDocumentStatus(selectedRowKeys, status);
+  }, [setDocumentStatus, selectedRowKeys]);
+
+  const onMove = async () => {
+    setShowMoveModal(true);
+    const res = await listDataset({}, { orderby: 'name' });
+    if (res?.data?.code === 0 && Array.isArray(res.data?.data?.kbs)) {
+      const list = res.data.data.kbs.map((item: any) => {
+        return {
+          label: `${item.name}（${item.id}）`,
+          value: item.id,
+        };
       });
-    },
-    [selectedRowKeys, setDocumentStatus],
-  );
+      setKnowledgeList(list);
+    }
+  };
+  const disabled = selectedRowKeys.length === 0;
 
   const handleEnableClick = useCallback(() => {
     onChangeStatus(true);
@@ -142,8 +175,6 @@ const DocumentToolbar = ({
   const handleDisableClick = useCallback(() => {
     onChangeStatus(false);
   }, [onChangeStatus]);
-
-  const disabled = selectedRowKeys.length === 0;
 
   const items: MenuProps['items'] = useMemo(() => {
     return [
@@ -201,6 +232,19 @@ const DocumentToolbar = ({
           </Flex>
         ),
       },
+      { type: 'divider' },
+      {
+        key: '5',
+        onClick: onMove,
+        label: (
+          <Flex gap={10}>
+            <span className={styles.deleteIconWrapper}>
+              <DragOutlined />
+            </span>
+            <b>{t('move', { keyPrefix: 'common' })}</b>
+          </Flex>
+        ),
+      },
     ];
   }, [
     handleDelete,
@@ -209,6 +253,7 @@ const DocumentToolbar = ({
     t,
     handleDisableClick,
     handleEnableClick,
+    onMove,
   ]);
 
   const sortIcon =
@@ -247,7 +292,42 @@ const DocumentToolbar = ({
           </span>
         </Button>
       </Space>
+
       <Space>
+        <Select
+          placeholder={t('selectStatus')}
+          value={selectStatus}
+          options={[
+            {
+              label: textTranslation(`knowledgeDetails.runningStatusAll`),
+              value: '',
+            },
+            {
+              label: textTranslation(`knowledgeDetails.runningStatus${0}`),
+              value: '0',
+            },
+            {
+              label: textTranslation(`knowledgeDetails.runningStatus${1}`),
+              value: '1',
+            },
+            {
+              label: textTranslation(`knowledgeDetails.runningStatus${2}`),
+              value: '2',
+            },
+            {
+              label: textTranslation(`knowledgeDetails.runningStatus${3}`),
+              value: '3',
+            },
+            {
+              label: textTranslation(`knowledgeDetails.runningStatus${4}`),
+              value: '4',
+            },
+          ]}
+          style={{ width: '200px' }}
+          onSelect={(e) => {
+            handleOnSelect(e);
+          }}
+        />
         <Input
           placeholder={t('searchFiles')}
           value={searchString}
@@ -263,6 +343,52 @@ const DocumentToolbar = ({
           </Button>
         </Dropdown>
       </Space>
+      <Modal
+        title="请选择目标知识库"
+        open={showMoveModal}
+        centered
+        destroyOnHidden
+        onCancel={() => {
+          setShowMoveModal(false);
+        }}
+        onOk={async () => {
+          const { dst_kb_id } = await form.validateFields();
+          console.log(
+            dst_kb_id,
+            umiLocation.search.split('=')[1],
+            selectedRowKeys,
+          );
+          const res = await moveKB({
+            src_kb_id: umiLocation.search.split('=')[1],
+            dst_kb_id,
+            doc_ids: selectedRowKeys,
+          });
+          if (res.data.code === 0) {
+            message.success('移动成功！');
+            setShowMoveModal(false);
+            onRefresh();
+          } else {
+            message.error(res.data.message);
+          }
+        }}
+      >
+        <Form form={form}>
+          <Form.Item
+            name="dst_kb_id"
+            rules={[{ required: true, message: '请选择目标库' }]}
+          >
+            <Select
+              showSearch
+              options={knowledgeList}
+              filterOption={(input, option) =>
+                (option?.label || option.id || '')
+                  .toLowerCase()
+                  .includes(input.toLowerCase())
+              }
+            />
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 };

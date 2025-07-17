@@ -53,6 +53,8 @@ const Preview = ({ highlights: state, setWidthAndHeight }: IProps) => {
         beforeLoad={<Skeleton active />}
         workerSrc="/pdfjs-dist/pdf.worker.min.js"
         errorMessage={<FileError>{error}</FileError>}
+        cMapPacked={true}
+        cMapUrl="https://unpkg.com/pdfjs-dist@2.5.207/cmaps/"
       >
         {(pdfDocument) => {
           pdfDocument.getPage(1).then((page) => {

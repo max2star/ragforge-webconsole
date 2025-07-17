@@ -74,6 +74,7 @@ export default {
   upload_and_parse: `${api_host}/document/upload_and_parse`,
   parse: `${api_host}/document/parse`,
   setMeta: `${api_host}/document/set_meta`,
+  mv_kb: `${api_host}/document/mv_kb`,
 
   // chat
   setDialog: `${api_host}/dialog/set`,

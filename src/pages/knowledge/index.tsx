@@ -45,6 +45,12 @@ const KnowledgeList = () => {
     loading,
   } = useInfiniteFetchKnowledgeList();
 
+  // 从 URL 参数中获取 searchKey，默认为空字符串
+  const searchKey = useMemo(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('searchKey') || '';
+  }, []);
+
   const nextList = useMemo(() => {
     const list =
       data?.pages?.flatMap((x) => (Array.isArray(x.kbs) ? x.kbs : [])) ?? [];
@@ -94,6 +100,8 @@ const KnowledgeList = () => {
                 <KnowledgeCard
                   item={item}
                   key={`${item?.name}-${index}`}
+                  searchString={searchString}
+                  searchKey={searchKey}
                 ></KnowledgeCard>
               );
             })}

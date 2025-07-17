@@ -90,6 +90,7 @@ export default {
       datasetDescription: '😉 パースが成功すると、質問と回答が可能になります。',
       addFile: 'ファイルを追加',
       searchFiles: 'ファイルを検索',
+      selectStatus: 'じょうたい',
       localFiles: 'ローカルファイル',
       emptyFiles: '空のファイルを作成',
       webCrawl: 'ウェブクロール',
@@ -289,9 +290,6 @@ export default {
       promptTip:
         'LLMのタスクを説明し、どのように応答すべきかを指定し、他のさまざまな要件を概説するためにシステムプロンプトを使用します。システムプロンプトは、LLMのさまざまなデータ入力として機能するキー（変数）と共に使用されることがよくあります。使用するキーを表示するには、スラッシュ `/` または (x) ボタンを使用します。',
       promptMessage: 'プロンプトは必須です',
-      promptText: `以下の段落を要約してください。数字には注意し、事実を捏造しないでください。段落は以下の通りです：
-      {cluster_content}
-上記が要約する内容です。`,
       maxToken: '最大トークン数',
       maxTokenTip: '要約のための最大トークン数。',
       maxTokenMessage: '最大トークン数は必須です',
@@ -523,6 +521,7 @@ export default {
       workspace: 'ワークスペース',
       upgrade: 'アップグレード',
       addLlmTitle: 'LLMを追加',
+      editLlmTitle: 'します LLM',
       modelName: 'モデル名',
       modelID: 'モデルID',
       modelUid: 'モデルUID',
@@ -703,9 +702,9 @@ export default {
       keywordDescription: `ユーザーの入力からトップNの検索結果を取得するコンポーネント。使用前にTopNの値が適切に設定されていることを確認してください。`,
       switchDescription: `前のコンポーネントの出力に基づいて条件を評価し、それに応じて実行の流れを指示するコンポーネント。ケースを定義し、各ケースのアクションまたは条件が満たされない場合のデフォルトアクションを指定することで、複雑な分岐ロジックを可能にします。`,
       wikipediaDescription: `wikipedia.orgから検索を行うコンポーネントで、TopNを使用して検索結果の数を指定します。既存のナレッジベースを補完します。`,
-      promptText: `以下の段落を要約してください。数字に注意し、事実を捏造しないでください。段落は次の通りです：
-        {input}
-  上記は要約する必要がある内容です。`,
+      promptText: `以下の段落を要約してください。数字に注意し、事実を捏造しないでください。段落は以下の通りです：
+      {cluster_content}
+上記が要約する内容です。`,
       createGraph: 'エージェントを作成',
       createFromTemplates: 'テンプレートから作成',
       retrieval: '検索',

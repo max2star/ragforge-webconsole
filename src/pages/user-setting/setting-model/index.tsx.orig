@@ -5,12 +5,7 @@ import { LLMFactory } from '@/constants/llm';
 import { useSetModalState, useTranslate } from '@/hooks/common-hooks';
 import { LlmItem, useSelectLlmList } from '@/hooks/llm-hooks';
 import { getRealModelName } from '@/utils/llm-util';
-import {
-  CloseCircleOutlined,
-  EditOutlined,
-  FormOutlined,
-  SettingOutlined,
-} from '@ant-design/icons';
+import { CloseCircleOutlined, EditOutlined, SettingOutlined } from '@ant-design/icons';
 import {
   Button,
   Card,
@@ -43,7 +38,6 @@ import {
   useSubmitApiKey,
   useSubmitAzure,
   useSubmitBedrock,
-  useSubmitEditOllama,
   useSubmitFishAudio,
   useSubmitGoogle,
   useSubmitHunyuan,
@@ -56,7 +50,6 @@ import {
 } from './hooks';
 import HunyuanModal from './hunyuan-modal';
 import styles from './index.less';
-import OllamaEditModal from './ollama-edit-modal';
 import OllamaModal from './ollama-modal';
 import SparkModal from './spark-modal';
 import SystemModelSettingModal from './system-model-setting-modal';
@@ -67,10 +60,9 @@ const { Text } = Typography;
 interface IModelCardProps {
   item: LlmItem;
   clickApiKey: (llmFactory: string) => void;
-  onEditModel: (e: any) => void;
 }
 
-const ModelCard = ({ item, clickApiKey, onEditModel }: IModelCardProps) => {
+const ModelCard = ({ item, clickApiKey }: IModelCardProps) => {
   const { visible, switchVisible } = useSetModalState();
   const { t } = useTranslate('setting');
   const { theme } = useTheme();
@@ -142,15 +134,9 @@ const ModelCard = ({ item, clickApiKey, onEditModel }: IModelCardProps) => {
                 <Space>
                   {getRealModelName(llmItem.name)}
                   <Tag color="#b8b8b8">{llmItem.type}</Tag>
-
                   <Tooltip title={t('edit', { keyPrefix: 'common' })}>
-                    <Button
-                      type={'text'}
-                      onClick={() => {
-                        onEditModel(llmItem);
-                      }}
-                    >
-                      <FormOutlined style={{ color: '#000' }} />
+                    <Button type={'text'} onClick={() => clickApiKey(item.name)}>
+                      <EditOutlined />
                     </Button>
                   </Tooltip>
                   <Tooltip title={t('delete', { keyPrefix: 'common' })}>
@@ -196,14 +182,7 @@ const UserSettingModel = () => {
     llmAddingLoading,
     selectedLlmFactory,
   } = useSubmitOllama();
-  const {
-    llmEditVisible,
-    hideEditModal,
-    onLlmEditOk,
-    llmEditLoading,
-    selectedEditLlmFactory,
-    showLlmEditModal,
-  } = useSubmitEditOllama();
+
   const {
     volcAddingVisible,
     hideVolcAddingModal,
@@ -314,13 +293,6 @@ const UserSettingModel = () => {
     [showApiKeyModal, showLlmAddingModal, ModalMap],
   );
 
-  const handleEditModel = useCallback(
-    (llmItem: LlmItem) => {
-      showLlmEditModal(llmItem);
-    },
-    [showLlmEditModal],
-  );
-
   const items: CollapseProps['items'] = [
     {
       key: '1',
@@ -330,7 +302,7 @@ const UserSettingModel = () => {
           grid={{ gutter: 16, column: 1 }}
           dataSource={llmList}
           renderItem={(item) => (
-            <ModelCard item={item} clickApiKey={handleAddModel} onEditModel={handleEditModel}></ModelCard>
+            <ModelCard item={item} clickApiKey={handleAddModel}></ModelCard>
           )}
         />
       ),
@@ -435,13 +407,6 @@ const UserSettingModel = () => {
         loading={llmAddingLoading}
         llmFactory={selectedLlmFactory}
       ></OllamaModal>
-      <OllamaEditModal
-        visible={llmEditVisible}
-        hideModal={hideEditModal}
-        onOk={onLlmEditOk}
-        loading={llmEditLoading}
-        llmFactory={selectedEditLlmFactory}
-      />
       <VolcEngineModal
         visible={volcAddingVisible}
         hideModal={hideVolcAddingModal}

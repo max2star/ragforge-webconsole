@@ -42,11 +42,14 @@ const token = getAuthorization();
 const KnowledgeFile = () => {
   const {
     searchString,
+    selectStatus,
     documents,
     pagination,
     handleInputChange,
+    handleOnSelect,
     toggleSortOrder,
     sortOrder,
+    onRefrshKey,
   } = useFetchNextDocumentList();
   const parserList = useSelectParserList();
   const { setDocumentStatus } = useSetNextDocumentStatus();
@@ -179,6 +182,7 @@ const KnowledgeFile = () => {
       title: t('parsingStatus'),
       dataIndex: 'run',
       key: 'run',
+      width: 180,
       //使用点击后台排序，不使用单页里的排序
       //sorter: (a, b) => Number(a.run) - Number(b.run),
       render: (text, record) => {
@@ -216,10 +220,13 @@ const KnowledgeFile = () => {
         showWebCrawlModal={showWebCrawlUploadModal}
         showDocumentUploadModal={showDocumentUploadModal}
         searchString={searchString}
+        selectStatus={selectStatus}
         handleInputChange={handleInputChange}
+        handleOnSelect={handleOnSelect}
         documents={documents}
         toggleSortOrder={toggleSortOrder}
         sortOrder={sortOrder}
+        onRefresh={onRefrshKey}
       ></DocumentToolbar>
       <Table
         rowKey="id"

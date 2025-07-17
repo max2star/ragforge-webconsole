@@ -27,6 +27,11 @@ import { useTranslate } from './common-hooks';
 import { useSetPaginationParams } from './route-hook';
 import { useFetchTenantInfo, useSaveSetting } from './user-setting-hooks';
 
+function getURLParam(key: string, search: string) {
+  const params = new URLSearchParams(search);
+  return params.get(key);
+}
+
 export const useSetSelectedRecord = <T = IKnowledgeFile>() => {
   const [currentRecord, setCurrentRecord] = useState<T>({} as T);
 
@@ -47,6 +52,13 @@ export const useHandleSearchChange = () => {
     },
     [],
   );
+
+  useEffect(() => {
+    const keywords = getURLParam('targetDocumentId', location.search);
+    if (keywords) {
+      setSearchString(decodeURIComponent(keywords));
+    }
+  }, []);
 
   return { handleInputChange, searchString };
 };

@@ -96,6 +96,7 @@ export default {
         ' Câu hỏi và câu trả lời chỉ có thể được trả lời sau khi phân tích cú pháp thành công.',
       addFile: 'Thêm tệp',
       searchFiles: 'Tìm kiếm tệp của bạn',
+      selectStatus: 'Tình trạng được chọn',
       localFiles: 'Tệp cục bộ',
       emptyFiles: 'Tạo tệp trống',
       webCrawl: 'Web Crawl',
@@ -428,7 +429,7 @@ export default {
       topP: 'Top P',
       topPMessage: 'Top P là bắt buộc',
       topPTip:
-        'Còn được gọi là “mẫu hạt nhân”, tham số này đặt ngưỡng để chọn một tập hợp nhỏ hơn các từ để lấy mẫu. Nó tập trung vào các từ có khả năng nhất, cắt bỏ các từ ít khả năng hơn.',
+        'Còn được gọi là "mẫu hạt nhân", tham số này đặt ngưỡng để chọn một tập hợp nhỏ hơn các từ để lấy mẫu. Nó tập trung vào các từ có khả năng nhất, cắt bỏ các từ ít khả năng hơn.',
       presencePenalty: 'Phạt hiện diện',
       presencePenaltyMessage: 'Phạt hiện diện là bắt buộc',
       presencePenaltyTip:
@@ -574,6 +575,7 @@ export default {
       workspace: 'Không gian làm việc',
       upgrade: 'Nâng cấp',
       addLlmTitle: 'Thêm LLM',
+      editLlmTitle: 'Biên tập',
       modelName: 'Tên mô hình',
       modelID: 'ID mô hình',
       modelUid: 'UID mô hình',

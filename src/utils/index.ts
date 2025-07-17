@@ -13,7 +13,7 @@ export const getWidth = () => {
 };
 export const rsaPsw = (password: string) => {
   const pub =
-    '-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArq9XTUSeYr2+N1h3Afl/z8Dse/2yD0ZGrKwx+EEEcdsBLca9Ynmx3nIB5obmLlSfmskLpBo0UACBmB5rEjBp2Q2f3AG3Hjd4B+gNCG6BDaawuDlgANIhGnaTLrIqWrrcm4EMzJOnAOI1fgzJRsOOUEfaS318Eq9OVO3apEyCCt0lOQK6PuksduOjVxtltDav+guVAA068NrPYmRNabVKRNLJpL8w4D44sfth5RvZ3q9t+6RTArpEtc5sh5ChzvqPOzKGMXW83C95TxmXqpbK6olN4RevSfVjEAgCydH6HN6OhtOQEcnrU97r9H0iZOWwbw3pVrZiUkuRD1R56Wzs2wIDAQAB-----END PUBLIC KEY-----';
+    '-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAr1KlvagFKU0wgjhJkXnFa6n9GlxKoOW55rLaITYof+I2rjNBA7ddW22v804MqJSPyC4d4gKbApul5BYXnAhK8Z6qf9sUMRsks+dc+sxVU/sBUJt1w31HM+KRw4gAias/qRpE9i+VCG7zijZQVpLrOlZ4a/ia8CZ6dHsknpMq/TU2pPJcp2yJsGb7hroogn1V4lz+H0mRw9idGM0ebs2WagtNbrO28UZ6tugMK5MQPb1puKlOGVS7EviR+82Cl56jV0NmYDYO7YJlne+X46uBc5hfhByznXSrmwhZHsgB9wYsWYQf1pO58JtE+gb1GEjoYWN2psJhlGh+23v+DnlPrQIDAQAB-----END PUBLIC KEY-----';
   const encryptor = new JSEncrypt();
 
   encryptor.setPublicKey(pub);

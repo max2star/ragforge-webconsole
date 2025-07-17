@@ -137,6 +137,42 @@ export const useSubmitOllama = () => {
   };
 };
 
+export const useSubmitEditOllama = () => {
+  const [selectedEditLlmFactory, setSelectedEditLlmFactory] = useState<any>({});
+  const { addLlm, loading } = useAddLlm();
+  const {
+    visible: llmEditVisible,
+    hideModal: hideEditModal,
+    showModal: showLlmAddingModal,
+  } = useSetModalState();
+
+  const onLlmEditOk = useCallback(
+    async (payload: IAddLlmRequestBody) => {
+      console.log(payload, '编辑');
+
+      // const ret = await addLlm(payload);
+      // if (ret === 0) {
+      //   hideEditModal();
+      // }
+    },
+    [hideEditModal, addLlm],
+  );
+
+  const handleShowLlmAddingModal = (llmFactory: string, data: any) => {
+    setSelectedEditLlmFactory({ llmFactory, ...data });
+    showLlmAddingModal();
+  };
+
+  return {
+    llmEditLoading: loading,
+    showLlmEditModal: handleShowLlmAddingModal,
+    llmEditVisible,
+    hideEditModal,
+    onLlmEditOk,
+    selectedEditLlmFactory,
+  };
+};
+
 export const useSubmitVolcEngine = () => {
   const { addLlm, loading } = useAddLlm();
   const {

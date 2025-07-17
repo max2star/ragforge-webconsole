@@ -60,7 +60,7 @@ const FlowCard = ({ item }: IProps) => {
               <span
                 className={theme === 'dark' ? styles.titledark : styles.title}
               >
-                {item.name}
+                {item.title}
               </span>
             </div>
             <OperateDropdown deleteItem={removeFlow} items={[]}>

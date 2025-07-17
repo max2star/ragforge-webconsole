@@ -13,6 +13,8 @@ import styles from './index.less';
 
 interface IProps {
   item: IKnowledge;
+  searchString: string;
+  searchKey: string;
 }
 
 const formatCharCount = (num: number) => {
@@ -22,7 +24,7 @@ const formatCharCount = (num: number) => {
   return num;
 };
 
-const KnowledgeCard = ({ item }: IProps) => {
+const KnowledgeCard = ({ item, searchString, searchKey }: IProps) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { theme } = useTheme();
@@ -39,7 +41,11 @@ const KnowledgeCard = ({ item }: IProps) => {
     ) {
       return;
     }
-    navigate(`/knowledge/${KnowledgeRouteKey.Dataset}?id=${item.id}`, {
+    let str: string = '';
+    if (searchKey === 'document' && searchString) {
+      str = `&targetDocumentId=${searchString}`;
+    }
+    navigate(`/knowledge/${KnowledgeRouteKey.Dataset}?id=${item.id}${str}`, {
       state: { from: 'list' },
     });
   };

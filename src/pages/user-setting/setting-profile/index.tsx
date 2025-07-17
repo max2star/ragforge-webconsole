@@ -13,10 +13,11 @@ import styles from './index.less';
 const { Option } = Select;
 
 type FieldType = {
-  nickname?: string;
+  username?: string;
   language?: string;
   email?: string;
   timezone?: string;
+  id?: string;
 };
 
 const tailLayout = {
@@ -120,6 +121,11 @@ const UserSettingProfile = () => {
             <p className={parentStyles.itemDescription}>
               {t('emailDescription')}
             </p>
+          </Form.Item>
+          <Form.Item label={t('userId')}>
+            <Form.Item<FieldType> name="id" noStyle>
+              <Input readOnly />
+            </Form.Item>
           </Form.Item>
           <Form.Item
             {...tailLayout}
