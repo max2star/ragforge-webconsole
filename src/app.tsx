@@ -79,6 +79,10 @@ const RootProvider = ({ children }: React.PropsWithChildren) => {
     const lng = storage.getLanguage();
     if (lng) {
       i18n.changeLanguage(lng);
+    } else {
+      // 设置默认语言为中文
+      i18n.changeLanguage('zh');
+      storage.setLanguage('zh');
     }
   }, []);
 
