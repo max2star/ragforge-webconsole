@@ -397,12 +397,12 @@ const Chunk = () => {
               </table>
             </Space>
           </Flex> */}
-          <section className={styles.documentPreview}>
-            <DocumentPreview
-              highlights={highlights}
-              setWidthAndHeight={setWidthAndHeight}
-            />
-          </section>
+            <section className={styles.documentPreview}>
+              <DocumentPreview
+                highlights={highlights}
+                setWidthAndHeight={setWidthAndHeight}
+              />
+            </section>
         </Flex>
       </div>
       {chunkUpdatingVisible && (

@@ -64,7 +64,7 @@ i18n
     },
     supportedLngs: Object.values(LanguageAbbreviation),
     resources,
-    fallbackLng: 'zh',
+    fallbackLng: 'en',
     interpolation: {
       escapeValue: false,
     },

@@ -82,19 +82,19 @@ export const useFetchKnowledgeConfigurationOnMount = (form: FormInstance) => {
       knowledgeDetails.avatar,
     );
     setTimeout(() => {
-      form.setFieldsValue({
-        ...pick(knowledgeDetails, [
-          'description',
-          'name',
-          'permission',
-          'embd_id',
-          'parser_id',
-          'language',
-          'parser_config',
-          'pagerank',
-        ]),
-        avatar: fileList,
-      });
+    form.setFieldsValue({
+      ...pick(knowledgeDetails, [
+        'description',
+        'name',
+        'permission',
+        'embd_id',
+        'parser_id',
+        'language',
+        'parser_config',
+        'pagerank',
+      ]),
+      avatar: fileList,
+    });
     }, 300);
   }, [form, knowledgeDetails]);
 

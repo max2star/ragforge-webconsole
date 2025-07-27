@@ -95,7 +95,7 @@ const AssistantSetting = ({
       <Form.Item
         name={'language'}
         label={t('language')}
-        initialValue={'Chinese'}
+        initialValue={'English'}
         tooltip="coming soon"
         style={{ display: 'none' }}
       >

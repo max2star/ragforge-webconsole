@@ -40,8 +40,8 @@ export const fileIconMap = {
 };
 
 export const LanguageList = [
-  'Chinese',
   'English',
+  'Chinese',
   'Traditional Chinese',
   'Indonesia',
   'Spanish',
