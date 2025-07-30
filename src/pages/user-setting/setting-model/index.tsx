@@ -308,7 +308,7 @@ const UserSettingModel = () => {
       } else if (llmFactory in ModalMap) {
         ModalMap[llmFactory as keyof typeof ModalMap]();
       } else {
-        showApiKeyModal({ llm_factory: llmFactory });
+        showApiKeyModal(llmFactory);
       }
     },
     [showApiKeyModal, showLlmAddingModal, ModalMap],

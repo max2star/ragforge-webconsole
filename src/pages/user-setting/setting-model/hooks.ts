@@ -13,6 +13,7 @@ import { useFetchTenantInfo } from '@/hooks/user-setting-hooks';
 import { IAddLlmRequestBody } from '@/interfaces/request/llm';
 import { useCallback, useState } from 'react';
 import { ApiKeyPostBody } from '../interface';
+import userService from '@/services/user-service';
 
 type SavingParamsState = Omit<IApiKeySavingParams, 'api_key'>;
 
@@ -42,17 +43,42 @@ export const useSubmitApiKey = () => {
   );
 
   const onShowApiKeyModal = useCallback(
-    (savingParams: SavingParamsState) => {
-      setSavingParams(savingParams);
-      showApiKeyModal();
+    async (llmFactory: string) => {
+      try {
+        // 获取现有配置
+        const { data } = await userService.getLlmConfig({
+          llm_factory: llmFactory,
+          llm_name: '' // 对于API Key配置，我们只需要工厂级别的配置
+        });
+        
+        const config = data?.data || {};
+        setSavingParams({
+          llm_factory: llmFactory,
+          api_key: config.api_key || '',
+          base_url: config.api_base || '',
+          group_id: config.group_id || '',
+        });
+        showApiKeyModal();
+      } catch (error) {
+        // 如果没有现有配置，使用空值
+        setSavingParams({
+          llm_factory: llmFactory,
+          api_key: '',
+          base_url: '',
+          group_id: '',
+        });
+        showApiKeyModal();
+      }
     },
     [showApiKeyModal, setSavingParams],
   );
 
   return {
     saveApiKeyLoading: loading,
-    initialApiKey: '',
+    initialApiKey: savingParams.api_key || '',
     llmFactory: savingParams.llm_factory,
+    baseUrl: savingParams.base_url || '',
+    groupId: savingParams.group_id || '',
     onApiKeySavingOk,
     apiKeyVisible,
     hideApiKeyModal,
@@ -158,8 +184,18 @@ export const useSubmitEditOllama = () => {
     [hideEditModal, addLlm],
   );
 
-  const handleShowLlmAddingModal = (llmFactory: string, data: any) => {
-    setSelectedEditLlmFactory({ llmFactory, ...data });
+  const handleShowLlmAddingModal = (llmItem: any) => {
+    // 从llmItem中提取配置信息
+    const config = {
+      llmFactory: llmItem.llm_factory || llmItem.name,
+      name: llmItem.name,
+      type: llmItem.type,
+      api_base: llmItem.api_base,
+      api_key: llmItem.api_key,
+      used_token: llmItem.used_token,
+      max_tokens: llmItem.max_tokens,
+    };
+    setSelectedEditLlmFactory(config);
     showLlmAddingModal();
   };
 

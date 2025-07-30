@@ -27,6 +27,7 @@ const {
   getInterfaceConfig,
   saveInterfaceConfig,
   uploadInterfaceFile,
+  get_llm_config,
 } = api;
 
 const methods = {
@@ -93,6 +94,10 @@ const methods = {
   deleteFactory: {
     url: deleteFactory,
     method: 'post',
+  },
+  getLlmConfig: {
+    url: get_llm_config,
+    method: 'get',
   },
   listToken: {
     url: getSystemTokenList,

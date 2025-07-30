@@ -9,6 +9,8 @@ interface IProps extends Omit<IModalManagerChildrenProps, 'showModal'> {
   loading: boolean;
   initialValue: string;
   llmFactory: string;
+  baseUrl?: string;
+  groupId?: string;
   onOk: (postBody: ApiKeyPostBody) => void;
   showModal?(): void;
 }
@@ -27,6 +29,8 @@ const ApiKeyModal = ({
   llmFactory,
   loading,
   initialValue,
+  baseUrl,
+  groupId,
   onOk,
 }: IProps) => {
   const [form] = Form.useForm();
@@ -40,9 +44,13 @@ const ApiKeyModal = ({
 
   useEffect(() => {
     if (visible) {
-      form.setFieldValue('api_key', initialValue);
+      form.setFieldsValue({
+        api_key: initialValue,
+        base_url: baseUrl,
+        group_id: groupId,
+      });
     }
-  }, [initialValue, form, visible]);
+  }, [initialValue, baseUrl, groupId, form, visible]);
 
   return (
     <Modal
