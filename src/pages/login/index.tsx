@@ -60,7 +60,7 @@ const Login = () => {
   };
 
   // 动态logo URL
-  const loginLogoUrl = interfaceConfig?.login_logo || logoWithText;
+  const loginLogoUrl = '/logo.svg';
   const welcomeText =
     interfaceConfig?.login_welcome_text ||
     '欢迎使用 RAGForge\n智能知识管理与AI助手平台';
